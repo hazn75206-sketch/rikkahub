@@ -1290,4 +1290,27 @@
   <string name="assistant_page_context_message_limit_count">Batas pesan konteks: %d</string>
   <string name="assistant_page_context_message_limit_unlimited">Pesan konteks tanpa batas</string>
   <string name="assistant_page_context_message_limit_warning">Membatasi konteks membuat cache prompt tidak valid setiap kali konteks dipangkas. Batas yang lebih besar memangkas lebih jarang; tanpa batas tidak pernah memangkas dan menjaga cache tetap utuh.</string>
+  <string name="setting_provider_aihubmix_discount">Diskon 10%%</string>
+  <string name="setting_mcp_oauth_required">Otorisasi OAuth diperlukan</string>
+  <string name="setting_mcp_oauth_authorize">Otorisasi OAuth</string>
+  <string name="setting_mcp_oauth_authorizing">Mengotorisasi, selesaikan di browser…</string>
+  <string name="setting_mcp_oauth_cancel">Batalkan otorisasi</string>
+  <string name="setting_asr_hotwords_placeholder">hotword1, hotword2, hotword3</string>
+  <string name="setting_tts_stepfun_get_key_desc">Dapatkan kunci API dari situs resmi StepFun: platform.stepfun.com/interface-key</string>
+  <string name="setting_tts_stepfun_get_key_placeholder">Dapatkan kunci API dari situs resmi StepFun</string>
+  <string name="setting_tts_stepfun_response_format_desc">Format encoding audio (catatan: nama kolom API StepFun camelCase)</string>
+  <string name="setting_tts_stepfun_speed_desc">Kecepatan (0.5 - 2.0, 1.0 normal)</string>
+  <string name="setting_tts_stepfun_volume_desc">Volume (0.1 - 2.0, 1.0 normal)</string>
+  <string name="setting_tts_stepfun_sample_rate_desc">Tingkat sampel (Hz)</string>
+  <string name="setting_tts_stepfun_instruction_desc">Instruksi konteks global, hanya berlaku untuk stepaudio-2.5-tts (≤200 karakter, biarkan kosong untuk dilewati)</string>
+  <string name="setting_tts_stepfun_instruction_placeholder">mis. nada lembut, tempo lebih lambat</string>
+  <string name="setting_provider_tester_non_streaming">Non-streaming</string>
+  <string name="setting_provider_tester_streaming">Streaming</string>
+  <string name="setting_provider_tester_tool_call">Panggilan alat</string>
+  <string name="setting_mcp_tool_enabled">Diaktifkan</string>
+  <string name="setting_donate_afdian">Afdian</string>
+  <string name="chat_drawer_statistics">Statistik</string>
+  <string name="translator_paste_text">Tempel teks</string>
+  <string name="translator_copy_result">Salin hasil terjemahan</string>
+  <string name="share_sheet_title">Bagikan model LLM Anda</string>
 </resources>

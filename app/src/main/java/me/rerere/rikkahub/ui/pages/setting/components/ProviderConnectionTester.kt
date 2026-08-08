@@ -93,19 +93,19 @@ fun ProviderConnectionTester(
                     }
 
                     TestResultItem(
-                        label = "非流式",
+                        label = stringResource(R.string.setting_provider_tester_non_streaming),
                         state = nonStreamingState,
                         resultText = (nonStreamingState as? UiState.Success)?.data ?: ""
                     )
 
                     TestResultItem(
-                        label = "流式",
+                        label = stringResource(R.string.setting_provider_tester_streaming),
                         state = streamingState,
                         resultText = streamingText
                     )
 
                     TestResultItem(
-                        label = "工具调用",
+                        label = stringResource(R.string.setting_provider_tester_tool_call),
                         state = toolsState,
                         resultText = (toolsState as? UiState.Success)?.data ?: ""
                     )
