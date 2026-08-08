@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
@@ -160,6 +161,12 @@ class RouteActivity : ComponentActivity() {
             config.setLayoutDirection(locale)
             newBase.createConfigurationContext(config)
         } else {
+            val systemLocale = if (Build.VERSION.SDK_INT >= 24) {
+                Resources.getSystem().configuration.locales[0]
+            } else {
+                Resources.getSystem().configuration.locale
+            }
+            Locale.setDefault(systemLocale)
             newBase
         }
         super.attachBaseContext(context)
