@@ -64,8 +64,11 @@ class RikkaHubApp : Application() {
         // install crash handler
         CrashHandler.install(this)
 
-        // Init QuickJS native library
-        QuickJSLoader.init()
+        // Init QuickJS native library in background to speed up cold start
+        AppScope.launch(Dispatchers.IO) {
+            runCatching { QuickJSLoader.init() }
+                .onFailure { Log.e(TAG, "QuickJSLoader.init failed", it) }
+        }
 
         // delete temp files
         deleteTempFiles()

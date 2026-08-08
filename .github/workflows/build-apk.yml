@@ -102,6 +102,12 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
 
+      - name: Verify bundled locales in APK
+        run: |
+          cd app/build/outputs/apk/debug
+          unzip -p *.apk res/xml/locales_config.xml | head -30
+          unzip -l *.apk | grep -E "values-id|values-zh|values-ja" | head -5 || echo "no per-locale files (compiled into resources.arsc)"
+
       - name: Rename APK
         run: |
           cd app/build/outputs/apk/debug
