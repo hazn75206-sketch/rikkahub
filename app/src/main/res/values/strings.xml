@@ -408,6 +408,9 @@
   <string name="imggen_page_settings_title">Image Generation Settings</string>
   <string name="imggen_page_title">Image Generation</string>
   <string name="language_english">🇺🇸 English</string>
+  <string name="language_indonesian">🇮🇩 Bahasa Indonesia</string>
+  <string name="language_russian">🇷🇺 Русский</string>
+  <string name="language_system">System Default</string>
   <string name="language_french">🇫🇷 Français</string>
   <string name="language_german">🇩🇪 Deutsch</string>
   <string name="language_italian">🇮🇹 Italiano</string>
@@ -847,6 +850,8 @@
   <string name="setting_page_extensions">Extensions</string>
   <string name="setting_page_extensions_desc">Manage prompt injections, skills and more</string>
   <string name="setting_page_general_settings">General Settings</string>
+  <string name="setting_page_language">Language</string>
+  <string name="setting_page_language_desc">App display language</string>
   <string name="setting_page_interaction_notification_settings">Interaction &amp;amp; Notifications</string>
   <string name="setting_page_mcp">MCP</string>
   <string name="setting_page_mcp_desc">Configure MCP Servers</string>

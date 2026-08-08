@@ -1,7 +1,9 @@
 package me.rerere.rikkahub
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
@@ -63,6 +65,7 @@ import me.rerere.rikkahub.data.db.DatabaseMigrationTracker
 import me.rerere.rikkahub.data.db.MigrationState
 import me.rerere.rikkahub.data.event.AppEvent
 import me.rerere.rikkahub.data.event.AppEventBus
+import java.util.Locale
 import me.rerere.rikkahub.ui.activity.SafeModeActivity
 import me.rerere.rikkahub.ui.components.ui.TTSController
 import me.rerere.rikkahub.ui.context.LocalASRState
@@ -104,6 +107,7 @@ import me.rerere.rikkahub.ui.pages.imggen.ImageGenPage
 import me.rerere.rikkahub.ui.pages.log.LogPage
 import me.rerere.rikkahub.ui.pages.search.SearchPage
 import me.rerere.rikkahub.ui.pages.setting.SettingAboutPage
+import me.rerere.rikkahub.ui.pages.setting.SettingLanguagePage
 import me.rerere.rikkahub.ui.pages.setting.SettingPreferencesPage
 import me.rerere.rikkahub.ui.pages.setting.SettingPreferencesThemePage
 import me.rerere.rikkahub.ui.pages.setting.SettingPreferencesNotificationPage
@@ -140,6 +144,25 @@ class RouteActivity : ComponentActivity() {
     private val okHttpClient by inject<OkHttpClient>()
     private val settingsStore by inject<SettingsStore>()
     private var navStack: MutableList<NavKey>? = null
+
+    override fun attachBaseContext(newBase: Context) {
+        val language = newBase.getSharedPreferences("language_pref", Context.MODE_PRIVATE)
+            .getString("language", "system") ?: "system"
+        val context = if (language != "system") {
+            val locale = when (language) {
+                "zh-rTW" -> Locale("zh", "TW")
+                "ko-rKR" -> Locale("ko", "KR")
+                else -> Locale.forLanguageTag(language)
+            }
+            Locale.setDefault(locale)
+            val config = Configuration(newBase.resources.configuration)
+            config.setLocale(locale)
+            newBase.createConfigurationContext(config)
+        } else {
+            newBase
+        }
+        super.attachBaseContext(context)
+    }
 
     // Volume key listener registry — last registered handler wins
     internal val volumeKeyListeners = mutableListOf<(isVolumeUp: Boolean) -> Boolean>()
@@ -408,6 +431,10 @@ class RouteActivity : ComponentActivity() {
                                 SettingPreferencesPage()
                             }
 
+                            entry<Screen.SettingLanguage> {
+                                SettingLanguagePage()
+                            }
+
                             entry<Screen.SettingPreferencesTheme> {
                                 SettingPreferencesThemePage()
                             }
@@ -640,6 +667,9 @@ sealed interface Screen : NavKey {
 
     @Serializable
     data object SettingPreferences : Screen
+
+    @Serializable
+    data object SettingLanguage : Screen
 
     @Serializable
     data object SettingPreferencesTheme : Screen

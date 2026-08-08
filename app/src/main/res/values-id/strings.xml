@@ -408,6 +408,9 @@
   <string name="imggen_page_settings_title">Pengaturan Pembuatan Gambar</string>
   <string name="imggen_page_title">Pembuatan Gambar</string>
   <string name="language_english">🇺🇸 English</string>
+  <string name="language_indonesian">🇮🇩 Bahasa Indonesia</string>
+  <string name="language_russian">🇷🇺 Русский</string>
+  <string name="language_system">Bawaan Sistem</string>
   <string name="language_french">🇫🇷 Français</string>
   <string name="language_german">🇩🇪 Deutsch</string>
   <string name="language_italian">🇮🇹 Italiano</string>
@@ -847,6 +850,8 @@
   <string name="setting_page_extensions">Extensions</string>
   <string name="setting_page_extensions_desc">Kelola injeksi prompt, skill, dan lainnya</string>
   <string name="setting_page_general_settings">Pengaturan Umum</string>
+  <string name="setting_page_language">Bahasa</string>
+  <string name="setting_page_language_desc">Bahasa tampilan aplikasi</string>
   <string name="setting_page_interaction_notification_settings">Interaksi &amp;amp; Notifikasi</string>
   <string name="setting_page_mcp">MCP</string>
   <string name="setting_page_mcp_desc">Atur Server MCP</string>
