@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -37,13 +39,10 @@ jobs:
         working-directory: web-ui
         run: pnpm install --frozen-lockfile
 
-      - name: Gradle cache
-        uses: actions/cache@v4
+      - name: Set up Gradle (with build cache)
+        uses: gradle/actions/setup-gradle@v4
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          cache-read-only: false
 
       - name: Create placeholder google-services.json
         run: |
@@ -103,8 +102,30 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
 
+      - name: Rename APK
+        run: |
+          cd app/build/outputs/apk/debug
+          for f in *.apk; do
+            mv "$f" "rikkahub-armv7a-debug.apk"
+          done
+
+      - name: Publish APK as Release asset (direct download)
+        uses: softprops/action-gh-release@v2
+        if: success()
+        with:
+          tag_name: apk-build
+          name: RikkaHub APK (armv7a)
+          prerelease: true
+          body: |
+            Build otomatis dari commit `${{ github.sha }}`
+
+            - APK: `rikkahub-armv7a-debug.apk` (langsung download, bukan zip)
+          files: app/build/outputs/apk/debug/*.apk
+          fail_on_unmatched_files: true
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
+        if: success()
         with:
-          name: rikkahub-debug-apk
+          name: rikkahub-armv7a-debug-apk
           path: app/build/outputs/apk/debug/*.apk
