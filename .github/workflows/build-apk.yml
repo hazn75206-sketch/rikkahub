@@ -100,7 +100,10 @@ jobs:
       - name: Build Debug APK
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug
+          VERSION_CODE=$(git rev-list --count HEAD)
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+          echo "Building versionCode=$VERSION_CODE, versionName=2.4.5.$VERSION_CODE"
+          ./gradlew assembleDebug -PversionCode=$VERSION_CODE -PversionName=2.4.5.$VERSION_CODE
 
       - name: Verify bundled locales in APK
         run: |
@@ -112,17 +115,18 @@ jobs:
         run: |
           cd app/build/outputs/apk/debug
           for f in *.apk; do
-            mv "$f" "rikkahub-arm64-debug.apk"
+            mv "$f" "rikkahub-arm64-debug-v${{ env.VERSION_CODE }}.apk"
           done
 
       - name: Write APK link to job summary
         run: |
           echo "## Download APK" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Versi: \`2.4.5.${{ env.VERSION_CODE }}\` (versionCode ${{ env.VERSION_CODE }})" >> $GITHUB_STEP_SUMMARY
           echo "Tanggal build: \`$(date -u +%Y-%m-%d %H:%M UTC)\`" >> $GITHUB_STEP_SUMMARY
           echo "Commit: \`${GITHUB_SHA::7}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "[klik di sini untuk download APK (rikkahub-arm64-debug.apk)](https://github.com/hazn75206-sketch/rikkahub/releases/download/apk-build/rikkahub-arm64-debug.apk)" >> $GITHUB_STEP_SUMMARY
+          echo "[klik di sini untuk download APK (rikkahub-arm64-debug-v${{ env.VERSION_CODE }}.apk)](https://github.com/hazn75206-sketch/rikkahub/releases/download/apk-build/rikkahub-arm64-debug-v${{ env.VERSION_CODE }}.apk)" >> $GITHUB_STEP_SUMMARY
 
       - name: Publish APK as Release asset (direct download)
         uses: softprops/action-gh-release@v2
@@ -134,7 +138,8 @@ jobs:
           body: |
             Build otomatis dari commit `${{ github.sha }}` — tanggal: `${{ github.event.head_commit.timestamp }}`
 
-            - APK: `rikkahub-arm64-debug.apk` (langsung download, bukan zip)
-            - Download: https://github.com/hazn75206-sketch/rikkahub/releases/download/apk-build/rikkahub-arm64-debug.apk
+            - Versi: `2.4.5.${{ env.VERSION_CODE }}` (versionCode `${{ env.VERSION_CODE }}` — selalu naik tiap build)
+            - APK: `rikkahub-arm64-debug-v${{ env.VERSION_CODE }}.apk` (langsung download, bukan zip)
+            - Download: https://github.com/hazn75206-sketch/rikkahub/releases/download/apk-build/rikkahub-arm64-debug-v${{ env.VERSION_CODE }}.apk
           files: app/build/outputs/apk/debug/*.apk
           fail_on_unmatched_files: true
