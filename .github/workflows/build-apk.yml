@@ -115,6 +115,15 @@ jobs:
             mv "$f" "rikkahub-arm64-debug.apk"
           done
 
+      - name: Write APK link to job summary
+        run: |
+          echo "## Download APK" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Tanggal build: \`$(date -u +%Y-%m-%d %H:%M UTC)\`" >> $GITHUB_STEP_SUMMARY
+          echo "Commit: \`${GITHUB_SHA::7}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[klik di sini untuk download APK (rikkahub-arm64-debug.apk)](https://github.com/hazn75206-sketch/rikkahub/releases/download/apk-build/rikkahub-arm64-debug.apk)" >> $GITHUB_STEP_SUMMARY
+
       - name: Publish APK as Release asset (direct download)
         uses: softprops/action-gh-release@v2
         if: success()
@@ -123,8 +132,9 @@ jobs:
           name: RikkaHub APK (arm64)
           prerelease: true
           body: |
-            Build otomatis dari commit `${{ github.sha }}`
+            Build otomatis dari commit `${{ github.sha }}` — tanggal: `${{ github.event.head_commit.timestamp }}`
 
             - APK: `rikkahub-arm64-debug.apk` (langsung download, bukan zip)
+            - Download: https://github.com/hazn75206-sketch/rikkahub/releases/download/apk-build/rikkahub-arm64-debug.apk
           files: app/build/outputs/apk/debug/*.apk
           fail_on_unmatched_files: true
