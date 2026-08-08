@@ -42,7 +42,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.composables.icons.lucide.Languages
+import com.composables.icons.lucide.Lucide
 import me.rerere.hugeicons.HugeIcons
 import me.rerere.hugeicons.stroke.AiMagic
 import me.rerere.hugeicons.stroke.Alert01
@@ -202,7 +202,7 @@ fun SettingPage(vm: SettingVM = koinViewModel()) {
                     )
                     item(
                         onClick = { navController.navigate(Screen.SettingLanguage) },
-                        leadingContent = { Icon(Languages, null) },
+                        leadingContent = { Icon(Lucide.Languages, null) },
                         supportingContent = { Text(stringResource(R.string.setting_page_language_desc)) },
                         headlineContent = { Text(stringResource(R.string.setting_page_language)) },
                     )
