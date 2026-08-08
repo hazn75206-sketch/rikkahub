@@ -26,10 +26,6 @@ android {
         versionName = "2.4.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        ndk {
-            abiFilters += listOf("armeabi-v7a")
-        }
     }
 
     splits {
@@ -39,7 +35,7 @@ android {
             val isBuildingBundle = gradle.startParameter.taskNames.any { it.lowercase().contains("bundle") }
             isEnable = !isBuildingBundle
             reset()
-            include("armeabi-v7a")
+            include("arm64-v8a")
             isUniversalApk = false
         }
     }

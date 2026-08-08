@@ -106,7 +106,7 @@ jobs:
         run: |
           cd app/build/outputs/apk/debug
           for f in *.apk; do
-            mv "$f" "rikkahub-armv7a-debug.apk"
+            mv "$f" "rikkahub-arm64-debug.apk"
           done
 
       - name: Publish APK as Release asset (direct download)
@@ -114,12 +114,12 @@ jobs:
         if: success()
         with:
           tag_name: apk-build
-          name: RikkaHub APK (armv7a)
+          name: RikkaHub APK (arm64)
           prerelease: true
           body: |
             Build otomatis dari commit `${{ github.sha }}`
 
-            - APK: `rikkahub-armv7a-debug.apk` (langsung download, bukan zip)
+            - APK: `rikkahub-arm64-debug.apk` (langsung download, bukan zip)
           files: app/build/outputs/apk/debug/*.apk
           fail_on_unmatched_files: true
 
@@ -127,5 +127,5 @@ jobs:
         uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: rikkahub-armv7a-debug-apk
+          name: rikkahub-arm64-debug-apk
           path: app/build/outputs/apk/debug/*.apk
