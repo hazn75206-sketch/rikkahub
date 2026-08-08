@@ -122,10 +122,3 @@ jobs:
             - APK: `rikkahub-arm64-debug.apk` (langsung download, bukan zip)
           files: app/build/outputs/apk/debug/*.apk
           fail_on_unmatched_files: true
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        if: success()
-        with:
-          name: rikkahub-arm64-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
