@@ -176,6 +176,13 @@ class WorkspaceDetailVM(
         }
     }
 
+    fun setFullAccess(fullAccess: Boolean) {
+        viewModelScope.launch {
+            repository.setFullAccess(id, fullAccess)
+            loadWorkspace()
+        }
+    }
+
     fun installRootfs(url: String) {
         viewModelScope.launch {
             _installError.value = null

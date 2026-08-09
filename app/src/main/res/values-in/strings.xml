@@ -1199,6 +1199,8 @@
   <string name="workspace_detail_tool_delete_file">Hapus File</string>
   <string name="workspace_detail_tool_move_file">Pindahkan File</string>
   <string name="workspace_detail_tool_shell">Jalankan Perintah</string>
+  <string name="workspace_detail_full_access">Akses Penuh</string>
+  <string name="workspace_detail_full_access_desc">Saat diaktifkan, semua alat workspace berjalan otomatis tanpa memerlukan persetujuan pengguna</string>
   <string name="workspace_detail_install_rootfs_desc">Akan mengunduh tar.gz dan mengekstraknya ke direktori linux dari %s.</string>
   <string name="workspace_detail_download_url">URL unduhan tar.gz</string>
   <string name="workspace_detail_area_files">File</string>

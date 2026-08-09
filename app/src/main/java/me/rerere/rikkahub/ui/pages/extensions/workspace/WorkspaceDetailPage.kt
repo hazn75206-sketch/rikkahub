@@ -69,6 +69,7 @@ import me.rerere.hugeicons.stroke.Settings03
 import me.rerere.hugeicons.stroke.Share08
 import me.rerere.rikkahub.Screen
 import me.rerere.rikkahub.data.ai.tools.resolveWorkspaceToolApproval
+import me.rerere.rikkahub.data.ai.tools.WorkspaceToolDefaultApprovals
 import me.rerere.rikkahub.data.db.entity.WorkspaceEntity
 import androidx.compose.ui.res.stringResource
 import me.rerere.rikkahub.R
@@ -189,6 +190,7 @@ fun WorkspaceDetailPage(id: String) {
                     installProgress = installProgress,
                     onInstallRootfs = { showInstallDialog = true },
                     onToolApprovalChange = vm::setToolApproval,
+                    onFullAccessChange = vm::setFullAccess,
                 )
 
                 1 -> WorkspaceFilesPage(
@@ -312,6 +314,7 @@ private fun WorkspaceBasicPage(
     installProgress: RootfsInstallProgress?,
     onInstallRootfs: () -> Unit,
     onToolApprovalChange: (String, Boolean) -> Unit,
+    onFullAccessChange: (Boolean) -> Unit,
 ) {
     val shellStatus = workspace?.shellStatus
     val installing = installProgress != null || shellStatus == WorkspaceShellStatus.INSTALLING.name
@@ -389,10 +392,63 @@ private fun WorkspaceBasicPage(
         }
 
         item {
+            WorkspaceFullAccessCard(
+                workspace = workspace,
+                onFullAccessChange = onFullAccessChange,
+            )
+        }
+
+        item {
             WorkspaceToolApprovalCard(
                 workspace = workspace,
                 onToolApprovalChange = onToolApprovalChange,
             )
+        }
+    }
+}
+
+@Composable
+private fun WorkspaceFullAccessCard(
+    workspace: WorkspaceEntity?,
+    onFullAccessChange: (Boolean) -> Unit,
+) {
+    val fullAccess = workspace?.fullAccess ?: false
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CustomColors.cardColorsOnSurfaceContainer,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.workspace_detail_full_access),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(
+                        text = stringResource(R.string.workspace_detail_full_access_desc),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(
+                    checked = fullAccess,
+                    onCheckedChange = { onFullAccessChange(it) },
+                    enabled = workspace != null,
+                )
+            }
         }
     }
 }
@@ -403,6 +459,7 @@ private fun WorkspaceToolApprovalCard(
     onToolApprovalChange: (String, Boolean) -> Unit,
 ) {
     val overrides = workspace?.toolApprovalOverrides().orEmpty()
+    val fullAccess = workspace?.fullAccess ?: false
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -449,9 +506,9 @@ private fun WorkspaceToolApprovalCard(
                         )
                     }
                     Switch(
-                        checked = resolveWorkspaceToolApproval(toolName, overrides),
+                        checked = resolveWorkspaceToolApproval(toolName, overrides, fullAccess),
                         onCheckedChange = { onToolApprovalChange(toolName, it) },
-                        enabled = workspace != null,
+                        enabled = workspace != null && !fullAccess,
                     )
                 }
             }

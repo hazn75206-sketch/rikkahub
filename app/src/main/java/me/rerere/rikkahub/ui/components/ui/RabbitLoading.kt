@@ -1,36 +1,36 @@
 package me.rerere.rikkahub.ui.components.ui
 
-import android.graphics.drawable.AnimatedVectorDrawable
-import android.widget.ImageView
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.compose.material3.ContainedLoadingIndicator
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.viewinterop.AndroidView
-import me.rerere.rikkahub.R
-import me.rerere.rikkahub.ui.context.LocalSettings
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.StrokeCap
 
 @Composable
 fun RabbitLoadingIndicator(modifier: Modifier = Modifier) {
-    val useAppIconStyleLoadingIndicator = LocalSettings.current.displaySetting.useAppIconStyleLoadingIndicator
+    val infiniteTransition = rememberInfiniteTransition(label = "loading")
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart,
+        ),
+        label = "rotation",
+    )
 
-    if (useAppIconStyleLoadingIndicator) {
-        AndroidView(
-            modifier = modifier,
-            factory = { context ->
-                ImageView(context).apply {
-                    val drawable = AppCompatResources.getDrawable(context, R.drawable.logo_anim) as? AnimatedVectorDrawable
-                    setImageDrawable(drawable)
-                    drawable?.start()
-                }
-            },
-            update = { imageView ->
-                (imageView.drawable as? AnimatedVectorDrawable)?.start()
-            }
-        )
-    } else {
-        ContainedLoadingIndicator(
-            modifier = modifier,
-        )
-    }
+    CircularProgressIndicator(
+        modifier = modifier.rotate(rotation),
+        strokeWidth = 3.dp,
+        color = MaterialTheme.colorScheme.primary,
+        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+        strokeCap = StrokeCap.Round,
+    )
 }

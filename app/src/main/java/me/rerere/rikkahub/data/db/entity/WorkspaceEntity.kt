@@ -33,6 +33,9 @@ data class WorkspaceEntity(
     // 工具审批的用户覆盖项 (toolName -> needsApproval)，未覆盖的工具沿用默认值
     @ColumnInfo("tool_approvals", defaultValue = "{}")
     val toolApprovals: String = "{}",
+    // 全权限模式：开启后所有工具无需审批直接执行
+    @ColumnInfo("full_access", defaultValue = "0")
+    val fullAccess: Boolean = false,
 ) {
     fun toolApprovalOverrides(): Map<String, Boolean> = runCatching {
         JsonInstant.decodeFromString<Map<String, Boolean>>(toolApprovals)

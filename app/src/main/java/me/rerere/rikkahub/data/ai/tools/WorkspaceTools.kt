@@ -30,8 +30,8 @@ val WorkspaceToolDefaultApprovals: Map<String, Boolean> = mapOf(
     "workspace_shell" to true,
 )
 
-fun resolveWorkspaceToolApproval(name: String, overrides: Map<String, Boolean>): Boolean =
-    overrides[name] ?: WorkspaceToolDefaultApprovals[name] ?: false
+fun resolveWorkspaceToolApproval(name: String, overrides: Map<String, Boolean>, fullAccess: Boolean = false): Boolean =
+    if (fullAccess) false else (overrides[name] ?: WorkspaceToolDefaultApprovals[name] ?: false)
 
 suspend fun createWorkspaceTools(
     workspaceId: String?,
@@ -39,8 +39,10 @@ suspend fun createWorkspaceTools(
     cwd: String? = null,
 ): List<Tool> {
     if (workspaceId.isNullOrBlank()) return emptyList()
-    val approvalOverrides = workspaceRepository.getById(workspaceId)?.toolApprovalOverrides().orEmpty()
-    fun needsApproval(name: String) = resolveWorkspaceToolApproval(name, approvalOverrides)
+    val workspace = workspaceRepository.getById(workspaceId)
+    val approvalOverrides = workspace?.toolApprovalOverrides().orEmpty()
+    val fullAccess = workspace?.fullAccess ?: false
+    fun needsApproval(name: String) = resolveWorkspaceToolApproval(name, approvalOverrides, fullAccess)
 
     val shellCwd = cwd?.removePrefix("/workspace/")?.removePrefix("/workspace")
 

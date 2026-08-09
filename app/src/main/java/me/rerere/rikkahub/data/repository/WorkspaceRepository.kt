@@ -109,6 +109,17 @@ class WorkspaceRepository(
         return true
     }
 
+    suspend fun setFullAccess(id: String, fullAccess: Boolean): Boolean {
+        val workspace = dao.getById(id) ?: return false
+        dao.upsert(
+            workspace.copy(
+                fullAccess = fullAccess,
+                updatedAt = System.currentTimeMillis(),
+            )
+        )
+        return true
+    }
+
     suspend fun installRootfs(
         id: String,
         url: String,

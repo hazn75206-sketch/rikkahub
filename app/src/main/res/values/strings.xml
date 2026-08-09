@@ -1199,6 +1199,8 @@
   <string name="workspace_detail_tool_delete_file">Delete File</string>
   <string name="workspace_detail_tool_move_file">Move File</string>
   <string name="workspace_detail_tool_shell">Execute Command</string>
+  <string name="workspace_detail_full_access">Full Access</string>
+  <string name="workspace_detail_full_access_desc">When enabled, all workspace tools execute automatically without requiring user approval</string>
   <string name="workspace_detail_install_rootfs_desc">Will download tar.gz and extract to the linux directory of %s.</string>
   <string name="workspace_detail_download_url">tar.gz download URL</string>
   <string name="workspace_detail_area_files">Files</string>
