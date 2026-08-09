@@ -11,6 +11,8 @@ import androidx.compose.runtime.tooling.ComposeStackTraceMode
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -50,6 +52,21 @@ const val WEB_SERVER_NOTIFICATION_CHANNEL_ID = "web_server"
 class RikkaHubApp : Application() {
     override fun onCreate() {
         super.onCreate()
+        val storedLanguage = getSharedPreferences("language_pref", MODE_PRIVATE)
+            .getString("language", "system") ?: "system"
+        val language = when (storedLanguage) {
+            "id" -> "id-ID"
+            "zh" -> "zh-CN"
+            "zh-rTW" -> "zh-TW"
+            "ja" -> "ja-JP"
+            "ko-rKR" -> "ko-KR"
+            "ru" -> "ru-RU"
+            else -> storedLanguage
+        }
+        AppCompatDelegate.setApplicationLocales(
+            if (language == "system") LocaleListCompat.getEmptyLocaleList()
+            else LocaleListCompat.forLanguageTags(language)
+        )
         startKoin {
             androidLogger()
             androidContext(this@RikkaHubApp)

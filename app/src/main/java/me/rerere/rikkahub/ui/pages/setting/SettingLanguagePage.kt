@@ -1,6 +1,5 @@
 package me.rerere.rikkahub.ui.pages.setting
 
-import android.app.Activity
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +19,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import me.rerere.rikkahub.R
 import me.rerere.rikkahub.ui.components.nav.BackButton
 import me.rerere.rikkahub.ui.components.ui.CardGroup
@@ -33,12 +34,12 @@ private const val LANGUAGE_KEY = "language"
 private fun languageOptions(): List<Pair<String, Int>> = listOf(
     "system" to R.string.language_system,
     "en" to R.string.language_english,
-    "id" to R.string.language_indonesian,
-    "zh" to R.string.language_simplified_chinese,
-    "zh-rTW" to R.string.language_traditional_chinese,
-    "ja" to R.string.language_japanese,
-    "ko-rKR" to R.string.language_korean,
-    "ru" to R.string.language_russian,
+    "id-ID" to R.string.language_indonesian,
+    "zh-CN" to R.string.language_simplified_chinese,
+    "zh-TW" to R.string.language_traditional_chinese,
+    "ja-JP" to R.string.language_japanese,
+    "ko-KR" to R.string.language_korean,
+    "ru-RU" to R.string.language_russian,
 )
 
 @Composable
@@ -46,7 +47,15 @@ fun SettingLanguagePage(vm: SettingVM = koinViewModel()) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val settings by vm.settings.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val currentLanguage = settings.language
+    val currentLanguage = when (settings.language) {
+        "id" -> "id-ID"
+        "zh" -> "zh-CN"
+        "zh-rTW" -> "zh-TW"
+        "ja" -> "ja-JP"
+        "ko-rKR" -> "ko-KR"
+        "ru" -> "ru-RU"
+        else -> settings.language
+    }
 
     Scaffold(
         topBar = {
@@ -81,8 +90,11 @@ fun SettingLanguagePage(vm: SettingVM = koinViewModel()) {
                                 context.getSharedPreferences(LANGUAGE_PREF, Context.MODE_PRIVATE)
                                     .edit()
                                     .putString(LANGUAGE_KEY, code)
-                                    .apply()
-                                (context as? Activity)?.recreate()
+                                    .commit()
+                                AppCompatDelegate.setApplicationLocales(
+                                    if (code == "system") LocaleListCompat.getEmptyLocaleList()
+                                    else LocaleListCompat.forLanguageTags(code)
+                                )
                             },
                             trailingContent = {
                                 RadioButton(

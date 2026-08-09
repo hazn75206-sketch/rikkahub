@@ -1,16 +1,13 @@
 package me.rerere.rikkahub
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.fadeIn
@@ -66,7 +63,6 @@ import me.rerere.rikkahub.data.db.DatabaseMigrationTracker
 import me.rerere.rikkahub.data.db.MigrationState
 import me.rerere.rikkahub.data.event.AppEvent
 import me.rerere.rikkahub.data.event.AppEventBus
-import java.util.Locale
 import me.rerere.rikkahub.ui.activity.SafeModeActivity
 import me.rerere.rikkahub.ui.components.ui.TTSController
 import me.rerere.rikkahub.ui.context.LocalASRState
@@ -141,36 +137,10 @@ import kotlin.uuid.Uuid
 
 private const val TAG = "RouteActivity"
 
-class RouteActivity : ComponentActivity() {
+class RouteActivity : AppCompatActivity() {
     private val okHttpClient by inject<OkHttpClient>()
     private val settingsStore by inject<SettingsStore>()
     private var navStack: MutableList<NavKey>? = null
-
-    override fun attachBaseContext(newBase: Context) {
-        val language = newBase.getSharedPreferences("language_pref", Context.MODE_PRIVATE)
-            .getString("language", "system") ?: "system"
-        val context = if (language != "system") {
-            val locale = when (language) {
-                "zh-rTW" -> Locale("zh", "TW")
-                "ko-rKR" -> Locale("ko", "KR")
-                else -> Locale.forLanguageTag(language)
-            }
-            Locale.setDefault(locale)
-            val config = Configuration(newBase.resources.configuration)
-            config.setLocale(locale)
-            config.setLayoutDirection(locale)
-            newBase.createConfigurationContext(config)
-        } else {
-            val systemLocale = if (Build.VERSION.SDK_INT >= 24) {
-                Resources.getSystem().configuration.locales[0]
-            } else {
-                Resources.getSystem().configuration.locale
-            }
-            Locale.setDefault(systemLocale)
-            newBase
-        }
-        super.attachBaseContext(context)
-    }
 
     // Volume key listener registry — last registered handler wins
     internal val volumeKeyListeners = mutableListOf<(isVolumeUp: Boolean) -> Boolean>()
