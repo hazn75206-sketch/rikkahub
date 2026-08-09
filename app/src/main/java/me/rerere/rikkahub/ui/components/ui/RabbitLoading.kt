@@ -12,11 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun RabbitLoadingIndicator(modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "loading")
-    val rotation by infiniteTransition.animateFloat(
+    val rotation = infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
@@ -24,7 +25,7 @@ fun RabbitLoadingIndicator(modifier: Modifier = Modifier) {
             repeatMode = RepeatMode.Restart,
         ),
         label = "rotation",
-    )
+    ).value
 
     CircularProgressIndicator(
         modifier = modifier.rotate(rotation),
