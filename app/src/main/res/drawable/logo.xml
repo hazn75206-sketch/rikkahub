@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="256"
+    android:viewportHeight="256">
+    <group
+        android:name="logo_root"
+        android:pivotX="128"
+        android:pivotY="128">
+        <path
+            android:fillColor="#111113"
+            android:pathData="M48,0 H208 A48,48 0 0 1 256,48 V184 L184,256 H48 A48,48 0 0 1 0,208 V48 A48,48 0 0 1 48,0 Z" />
+        <path
+            android:fillColor="#F5F5F0"
+            android:pathData="M70.5,59 L105,59 L105,197 L70.5,197 Z
+                M105,59 L185.5,59 L185.5,84.3 L105,84.3 Z
+                M160.2,59 L185.5,59 L185.5,130.3 L160.2,130.3 Z
+                M105,105 L185.5,105 L185.5,130.3 L105,130.3 Z
+                M125.7,130.3 L160.2,130.3 L185.5,197 L151,197 Z" />
+    </group>
+</vector>
