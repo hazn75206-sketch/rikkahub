@@ -81,8 +81,14 @@ class RikkaHubApp : Application() {
         // install crash handler
         CrashHandler.install(this)
 
-        // Init QuickJS native library (must stay on main thread to avoid race conditions)
-        QuickJSLoader.init()
+        // Init QuickJS native library deferred until after first frame.
+        // Must stay on main thread (QuickJS context binds to creating thread),
+        // but delaying it makes the splash screen disappear almost instantly.
+        get<AppScope>().launch {
+            delay(500)
+            runCatching { QuickJSLoader.init() }
+                .onFailure { Log.e(TAG, "QuickJSLoader.init failed", it) }
+        }
 
         // delete temp files
         deleteTempFiles()
